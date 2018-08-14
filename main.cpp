@@ -6,6 +6,7 @@ class Element {
 public:
   virtual ~Element() {}
  virtual  bool appendLeft(const ElementTree& other) { return false; }
+ virtual  bool appendRight(const ElementTree& other) { return false; }
   virtual void parse() const {};
 };
 enum class type { add, sub, mult, div };
@@ -17,6 +18,9 @@ public:
   ElementTree(Element* root_) : root{ root_ } {}
   bool appendLeft(const ElementTree& other) {
     return root->appendLeft(other);
+  }
+  bool appendRight(const ElementTree& other) {
+    return root->appendRight(other);
   }
 
   void parse() { // in-order traversal
@@ -55,6 +59,10 @@ public:
     lhs = other.root;
     return true;
   }
+  bool appendRight(const ElementTree& other) {
+    rhs = other.root;
+    return true;
+  }
 
   void parse() const{
     lhs->parse();
@@ -76,6 +84,7 @@ public:
     std::cout << '\n';
   }
 };
+
 
 int main() {
   // 3 * x
