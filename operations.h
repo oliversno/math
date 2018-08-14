@@ -4,6 +4,7 @@
 
 #include<string>
 #include<iostream>
+#include<algorithm>
 class ElementTree;
 
 class Element {
@@ -86,6 +87,25 @@ public:
     }
     rhs->parse(stream);
     stream << '\n';
+  }
+};
+
+class EquationFormer {
+private:
+  std::string equationTxt;
+  ElementTree formFrom(size_t pos) {
+    size_t symPos = equationTxt.find("*/", pos); // M and D of same importance
+    if (equationTxt[symPos] == '*') {
+
+    }
+    else if (equationTxt[symPos] == '/') {
+
+    }
+  }
+public:
+  EquationFormer(const std::string& in) : equationTxt{ in } {}
+  ElementTree form() {
+
   }
 };
 
