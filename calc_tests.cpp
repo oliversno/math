@@ -19,8 +19,8 @@ void testSingleMult() {
   assert(os.str() == correct.str());
 }
 void testSingleDiv() {
-  Operator times{ type::mult, new Constant{ 3 }, new Constant{ 5 } }; // 3/5
-  ElementTree tree{ &times };
+  Operator divide{ type::div, new Constant{ 3 }, new Constant{ 5 } }; // 3/5
+  ElementTree tree{ &divide };
   std::ostringstream os;
   tree.parse(os);
   std::ostringstream correct;
@@ -28,8 +28,8 @@ void testSingleDiv() {
   assert(os.str() == correct.str());
 }
 void testSingleAdd() {
-  Operator times{ type::mult, new Constant{ 3 }, new Constant{ 5 } }; // 3+5
-  ElementTree tree{ &times };
+  Operator plus{ type::add, new Constant{ 3 }, new Constant{ 5 } }; // 3+5
+  ElementTree tree{ &plus };
   std::ostringstream os;
   tree.parse(os);
   std::ostringstream correct;
@@ -37,8 +37,8 @@ void testSingleAdd() {
   assert(os.str() == correct.str());
 }
 void testSingleSub() {
-  Operator times{ type::mult, new Constant{ 3 }, new Constant{ 5 } }; // 3-5
-  ElementTree tree{ &times };
+  Operator minus{ type::sub, new Constant{ 3 }, new Constant{ 5 } }; // 3-5
+  ElementTree tree{ &minus };
   std::ostringstream os;
   tree.parse(os);
   std::ostringstream correct;
