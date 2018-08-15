@@ -17,12 +17,25 @@ private:
   Element* root = nullptr;
   ElementTree* lhs = nullptr;
   ElementTree* rhs = nullptr;
+
+  void recursiveParse(std::ostream& stream) { // in-order traversal
+    if (!lhs || !rhs) { // If leaf node only interpret then move back up the recursion ladder
+      root->parse(stream);
+    }
+    else {
+      lhs->recursiveParse(stream);
+      root->parse(stream);
+      rhs->recursiveParse(stream);
+    }
+  }
 public:
   ElementTree(Element* root_) : root{ root_ } {}
   ~ElementTree() {
-    delete(lhs);
-    delete(rhs);
-    lhs = nullptr;
+    if(!lhs)
+      delete(lhs);
+    if (!rhs)
+      delete(rhs);
+     lhs = nullptr;
     rhs = nullptr;
     delete root;
   }
@@ -34,15 +47,8 @@ public:
   }
 
   void parse(std::ostream& stream) { // in-order traversal
-    if (!lhs || !rhs) { // If leaf node only interpret then move back up the recursion ladder
-      root->parse(stream);
-    }
-    else {
-      lhs->parse(stream);
-      root->parse(stream);
-      rhs->parse(stream);
-      stream << '\n';
-    }
+    recursiveParse(stream);
+    stream << '\n';
   }
 };
 
@@ -93,19 +99,32 @@ public:
 class EquationFormer {
 private:
   std::string equationTxt;
-  ElementTree formFrom(size_t pos) {
+  ElementTree* formFrom(size_t pos) {
     size_t symPos = equationTxt.find("*/", pos); // M and D of same importance
     if (equationTxt[symPos] == '*') {
-
+      ElementTree* treePtr = new ElementTree{ new Operator{type::mult} };
+      treePtr->appendLeft(formFrom(symPos));
     }
     else if (equationTxt[symPos] == '/') {
-
+      ElementTree* treePtr = new ElementTree{ new Operator{ type::div } };
+      treePtr->appendLeft(formFrom(symPos));
+    }
+    else {
+      size_t symPos = equationTxt.find("+-", pos); // A and S of same importance
+      if (equationTxt[symPos] == '+') {
+        ElementTree* treePtr = new ElementTree{ new Operator{ type::add } };
+        treePtr->appendLeft(formFrom(symPos));
+      }
+      else if (equationTxt[symPos] == '-') {
+        ElementTree* treePtr = new ElementTree{ new Operator{ type::sub } };
+        treePtr->appendLeft(formFrom(symPos));
+      }
     }
   }
 public:
   EquationFormer(const std::string& in) : equationTxt{ in } {}
   ElementTree form() {
-
+    return *formFrom(0);
   }
 };
 
