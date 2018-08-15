@@ -71,6 +71,15 @@ void testComplex() {
   assert(os.str() == correct.str());
 }
 
+void testFormerSimple() {
+  std::string eq = "3+7*23";
+  std::ostringstream os;
+  EquationFormer(eq).form().parse(os);
+  std::ostringstream correct;
+  correct << eq;
+  assert(os.str() == correct.str());
+}
+
 void runAllTests() {
   testSingleMult();
   testSingleDiv();
